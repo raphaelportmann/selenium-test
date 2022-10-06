@@ -6,11 +6,11 @@ require('dotenv').config();
     let driver = await new Builder()
         .forBrowser(Browser.CHROME)
         .setChromeService(new chrome.ServiceBuilder(process.env.CHROMEDRIVER_PATH))
-        .setChromeOptions(new chrome.Options().headless())
+        .setChromeOptions(new chrome.Options())
         .build();
     const n = 20;
     let i = 0;
-    await driver.get('https://de.wikipedia.org/wiki/Philosophie_der_Antike');
+    await driver.get('https://de.wikipedia.org/wiki/Bananen');
     while (i < n && await driver.findElement(By.id('firstHeading')).getText() !== 'Philosophie') {
         let possibleLinks = await driver.findElements(By.css('#mw-content-text > .mw-parser-output > p > a'));
         for (let link of possibleLinks) {
@@ -25,4 +25,6 @@ require('dotenv').config();
         }
         i++;
     }
+    await driver.sleep(5000);
+    await driver.quit();
 })();
