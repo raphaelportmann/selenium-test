@@ -10,7 +10,8 @@ require('dotenv').config();
         .build();
     const n = 20;
     let i = 0;
-    await driver.get('https://de.wikipedia.org/wiki/Bananen');
+    // read url from terminal input
+    await driver.get(process.argv[2]);
     while (i < n && await driver.findElement(By.id('firstHeading')).getText() !== 'Philosophie') {
         let possibleLinks = await driver.findElements(By.css('#mw-content-text > .mw-parser-output > p > a'));
         for (let link of possibleLinks) {
@@ -25,6 +26,11 @@ require('dotenv').config();
         }
         i++;
     }
-    await driver.sleep(5000);
+    if (i === n) {
+        console.log('Philosophie nicht gefunden.');
+    } else {
+        console.log('Philosophie gefunden.');
+    }
+    await driver.sleep(10000);
     await driver.quit();
 })();
